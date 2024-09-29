@@ -44,7 +44,7 @@ void cacheInsert(long long key, int value) {
         if (cacheArray[iter].key == -1) {
             cacheArray[iter].key = key;
             cacheArray[iter].value = value;
-            cacheArray[iter].insertionT = startT - clock();
+            cacheArray[iter].insertionT = clock() - startT;
             full = false;
             break;
         }
@@ -76,7 +76,7 @@ void cacheLRU(long long key, int value) {
 
     cacheArray[index].key = key;
     cacheArray[index].value = value;
-    cacheArray[index].insertionT = startT - clock();
+    cacheArray[index].insertionT = clock() - startT;
 }
 
 void cacheRR(long long key, int value) {
@@ -89,7 +89,10 @@ void cacheRR(long long key, int value) {
 int cacheGetValue(long long key) {
     for (int iter = 0; iter < cacheSize; iter++) {
         if (cacheArray[iter].key == key) {
-            if (cacheType == 1) cacheArray[iter].insertionT = startT - clock();
+            if (cacheType == 1) {
+                cacheArray[iter].insertionT = clock() - startT;
+                // printf("Key: %d, Insertion set to:%ld\n", key, cacheArray[iter].insertionT);
+            }
             return cacheArray[iter].value;
         }
     }
@@ -101,6 +104,7 @@ void printCache() {
     for (int iter = 0; iter < cacheSize; iter++) {
         printf("Iter:%d, Key_Value:%d, Cache_Value:%d, Time_Value:%ld\n", iter,
                cacheArray[iter].key, cacheArray[iter].value,
-               startT - cacheArray[iter].insertionT);
+               cacheArray[iter].insertionT);
     }
+    // printf("\n");
 }

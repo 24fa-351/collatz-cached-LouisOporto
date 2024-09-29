@@ -6,7 +6,7 @@
 #include "cache.h"
 
 long long collatzConject(long long);
-int collatzWrapper(long long, int*);
+int collatzWrapper(long long, int*, int*);
 int getRandomNumber(int, int);
 
 /* TODO LIST
@@ -50,21 +50,26 @@ int main(int argc, char* argv[]) {
     if (strcmp(argv[4], "RR") == 0) cacheInit(cacheSize, 0);
     srand(time(NULL));
     int cacheHit = 0;
+    int cacheCalls = 0;
 
     // Generate N number of random values
     for (int iter = 0; iter < numOfValues; iter++) {
         int randNum = getRandomNumber(minNum, maxNum);
-        int counter = collatzWrapper(randNum, &cacheHit);
+        int counter = collatzWrapper(randNum, &cacheHit, &cacheCalls);
         if (!cacheHas(randNum) && strcmp(argv[4], "none") != 0)
+        {
             cacheInsert(randNum, counter);
+            // printCache();
+        }
 
-        // printf("Random Number:%10d, Steps: %10d\n", randNum, counter);
-        //  printf("%.2f\%\n", iter / (float)numOfValues * 100);
+        // printf("Random Number:%10d, Steps: %10d\n======================================\n", randNum, counter);
+        printf("%.2f\%\n", iter / (float)numOfValues * 100);
         fprintf(fpt, "%d, %d\n", randNum, counter);
     }
 
-    float cache = (cacheHit / (float)numOfValues) * 100.f;
-    printf("%.2f\%\n", cache);
+    float cache = (cacheHit / (float)cacheCalls) * 100.f;
+    // printf("%.2f\%\n", cache);
+    printf("Cache Hit:%.2f\%\n", cache);
     fprintf(fpt, "Cache Hit, %.2f\%\n", cache);
     // printCache();
     cacheFree();
@@ -86,9 +91,10 @@ long long collatzConject(long long x) {
 }
 
 // Change wrapper to have the method selected (none, LRU, RR)
-int collatzWrapper(long long num, int* hits) {
+int collatzWrapper(long long num, int* hits, int* calls) {
     int counter = 0;
     while (num != 1) {
+        *calls += 1;
         if (cacheHas(num)) {
             // printf("Cache hit!\n");
             *hits += 1;

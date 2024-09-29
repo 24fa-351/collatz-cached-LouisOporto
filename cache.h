@@ -3,17 +3,15 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
-
-void cacheInit(int size);
-bool cacheHas(int key);
+void cacheInit(int size, int type);
+bool cacheHas(long long key);
 void cacheFree();
-void cacheInsert(int key, int value); // LRU
-void cacheRR(int key, int value); // RR
-int cacheGetValue(int key);
-
-
-// Function to resort array and remove least recently used. called functions get resorted back to the top
+void cacheInsert(long long key, int value);
+void cacheLRU(long long key, int value); // LRU
+void cacheRR(long long key, int value); // RR
+int cacheGetValue(long long key);
 
 // helper function
 void printCache();

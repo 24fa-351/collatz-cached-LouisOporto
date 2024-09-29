@@ -5,4 +5,4 @@ test:
 		bash test.sh
 
 debug:
-		gcc -g collatz.c -o debug.exe
+		gcc -g collatz.c cache.c -o debug.exe

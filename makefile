@@ -1,9 +1,8 @@
 build:
-		gcc collatz.c -o collatz.exe
+		gcc collatz.c cache.c -o collatz.exe
 
 test:
-		# build a sh file for basic test
-
+		bash test.sh
 
 debug:
 		gcc -g collatz.c -o debug.exe

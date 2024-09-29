@@ -54,12 +54,12 @@ int main(int argc, char* argv[]) {
         if(!cacheHas(randNum) && strcmp(argv[4], "none") != 0) cacheInsert(randNum, counter);
 
         //printf("Random Number:%10d, Steps: %10d\n", randNum, counter);
-        printf("%.2f\%\n", iter / (float)numOfValues * 100);
+        // printf("%.2f\%\n", iter / (float)numOfValues * 100);
         fprintf(fpt, "%d, %d\n", randNum, counter);
     }
 
     float cache = (cacheHit / (float)numOfValues) * 100.f;
-    printf("Cache Hit: %.2f\%\n", cache);
+    printf("%.2f\%\n", cache);
     fprintf(fpt, "Cache Hit, %.2f\%\n", cache);
     //printCache();
     cacheFree();

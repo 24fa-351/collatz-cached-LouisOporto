@@ -82,7 +82,7 @@ void cacheLRU(long long key, int value) {
 
 void cacheRR(long long key, int value) {
     int randomIndex = rand() % cacheSize;
-    printf("RR @ %d\n", randomIndex);
+    // printf("RR @ %d\n", randomIndex);
     cacheArray[randomIndex].key = key;
     cacheArray[randomIndex].value = value;
 }

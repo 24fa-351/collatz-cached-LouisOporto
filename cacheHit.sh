@@ -8,11 +8,11 @@ echo "Cache Size, LRU Cache Hit" >> resultLRU.csv
 
 for i in {1..10};
 do
-  echo "10, $(./collatz 10000 1 500000 LRU 0)" >> resultLRU.csv
+  echo "0, $(./collatz 10000 1 500000 LRU 0)" >> resultLRU.csv
 done
 for i in {1..10};
 do
-  echo "100, $(./collatz 10000 1 500000 LRU 10)" >> resultLRU.csv
+  echo "10, $(./collatz 10000 1 500000 LRU 10)" >> resultLRU.csv
 done
 for i in {1..10};
 do
@@ -33,6 +33,10 @@ done
 for i in {1..10};
 do
   echo "4000, $(./collatz 10000 1 500000 LRU 4000)" >> resultLRU.csv
+done
+for i in {1..10};
+do
+  echo "5000, $(./collatz 10000 1 500000 LRU 5000)" >> resultLRU.csv
 done
 
 echo "Now testing RR Caching..."
@@ -66,6 +70,9 @@ for i in {1..10};
 do
   echo "4000, $(./collatz 10000 1 500000 LRU 4000)" >> resultRR.csv
 done
-
+for i in {1..10};
+do
+  echo "5000, $(./collatz 10000 1 500000 LRU 5000)" >> resultRR.csv
+done
 
 echo "Complete Analysis..."

@@ -6,7 +6,7 @@
 #include "cache.h"
 
 long long collatzConject(long long);
-int collatzWrapper(long long, int*, int*);
+int collatzWrapper(long long, int, int, int*, int*);
 int getRandomNumber(int, int);
 
 /* TODO LIST
@@ -55,7 +55,8 @@ int main(int argc, char* argv[]) {
     // Generate N number of random values
     for (int iter = 0; iter < numOfValues; iter++) {
         int randNum = getRandomNumber(minNum, maxNum);
-        int counter = collatzWrapper(randNum, &cacheHit, &cacheCalls);
+        int counter = collatzWrapper(randNum, minNum, maxNum, &cacheHit, &cacheCalls);
+        cacheCalls += 1;
         if (!cacheHas(randNum) && strcmp(argv[4], "none") != 0)
         {
             cacheInsert(randNum, counter);
@@ -68,8 +69,8 @@ int main(int argc, char* argv[]) {
     }
 
     float cache = (cacheHit / (float)cacheCalls) * 100.f;
-    // printf("%.2f\%\n", cache);
-    printf("Cache Hit:%.2f\%\n", cache);
+    printf("Cache Hits:%d Cache Calls:%d\n", cacheHit, cacheCalls);
+    printf("%.2f\%\n", cache);
     fprintf(fpt, "Cache Hit, %.2f\%\n", cache);
     // printCache();
     cacheFree();
@@ -91,14 +92,16 @@ long long collatzConject(long long x) {
 }
 
 // Change wrapper to have the method selected (none, LRU, RR)
-int collatzWrapper(long long num, int* hits, int* calls) {
+int collatzWrapper(long long num, int MIN, int MAX, int* hits, int* calls) {
     int counter = 0;
     while (num != 1) {
-        *calls += 1;
-        if (cacheHas(num)) {
-            // printf("Cache hit!\n");
-            *hits += 1;
-            return counter + cacheGetValue(num);
+        if (num < MAX && num > MIN) {
+            if (cacheHas(num)) {
+                // printCache();
+                // printf("Cache hit!\n");
+                *hits += 1;
+                return counter + cacheGetValue(num);
+            }
         }
         num = collatzConject(num);
         counter++;
